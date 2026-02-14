@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Models;
+﻿namespace Core.Models;
 
 public class TimeSlot : BaseEntity
 {
@@ -13,6 +7,8 @@ public class TimeSlot : BaseEntity
     public int DurationInMinutes { get; set; }
     public DayOfWeek DayOfWeek { get; set; }
     public bool IsActive { get; set; }
+    public int RoomId { get; set; }
+    public Room Room { get; set; } = null!;
 }
 
 public enum DayOfWeek

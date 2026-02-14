@@ -22,4 +22,12 @@ public class Student : BaseEntity
     public string PhoneNumber { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
+    public WaiverStatus WaiverStatus { get; set; }
+}
+
+public enum WaiverStatus
+{
+    NotSigned,
+    Signed,
+    Expired
 }
