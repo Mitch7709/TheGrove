@@ -16,4 +16,6 @@ public class Session : BaseEntity
     public int TimeSlotId { get; set; }
     public TimeSlot TimeSlot { get; set; } = null!;
     public decimal Price { get; set; }
+
+    public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

@@ -13,6 +13,8 @@ public class Instructor : BaseEntity
         public const int FirstName = 50;
         public const int LastName = 50;
         public const int Bio = 500;
+        public const int PhoneNumber = 20;
+        public const int Email = 100;
     }
 
     public int Id { get; set; }
