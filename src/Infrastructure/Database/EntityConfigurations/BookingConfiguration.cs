@@ -22,7 +22,10 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.Property(b => b.ConfirmationId)
             .HasMaxLength(20)
             .IsRequired();
-        
+        builder.Property(b => b.PriceAtBooking)
+            .HasColumnType("decimal(18,2)")
+            .IsRequired();
+
         builder.HasOne(b => b.Student)
             .WithMany(s => s.Bookings)
             .HasForeignKey(b => b.StudentId)

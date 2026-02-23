@@ -27,6 +27,15 @@ public class Student : BaseEntity
     public WaiverStatus WaiverStatus { get; set; }
 
     public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+    public int CalculateAge()
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var age = today.Year - DateOfBirth.Year;
+        if (DateOfBirth > today.AddYears(-age))
+            age--;
+        return age;
+    }
 }
 
 public enum WaiverStatus
