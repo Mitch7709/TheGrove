@@ -12,7 +12,7 @@ public record CreateStudentRequest(
 );
 
 public record CreateStudentResponse(
-    int Id,
+    long Id,
     string FirstName,
     string LastName,
     DateOnly DateOfBirth,

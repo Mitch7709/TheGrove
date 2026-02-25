@@ -7,12 +7,8 @@ namespace Core.Features.Students.Create;
 
 public class CreateStudentUseCase(IDbContext dbContext)
 {
-    public async Task<Result<CreateStudentResponse>> ExecuteAsync(CreateStudentRequest request)
+    public async Task<CreateStudentResponse> ExecuteAsync(CreateStudentRequest request)
     {
-        var exists = await dbContext.Set<Student>().AnyAsync(s => s.Email == request.Email);
-        if (exists)
-            return Result.Failure(ErrorType.Conflict, "A student already exists with the provided email");
-
         var student = new Student
         {
             FirstName = request.FirstName,
