@@ -34,7 +34,7 @@ namespace API.Modules
             return TypedResults.Ok(result);
         }
 
-        private static async Task<Results<Ok<StudentResponse>, NotFound<string>>> GetStudentById(long id, StudentReadService service)
+        private static async Task<Results<Ok<StudentResponse>, NotFound<string>>> GetStudentById(int id, StudentReadService service)
         {
             var result = await service.GetByIdAsync(id);
             return result.IsSuccess
@@ -49,7 +49,7 @@ namespace API.Modules
             return TypedResults.Ok(result);
         }
 
-        private static async Task<Results<Ok<UpdateStudentResponse>, NotFound<string>>> UpdateStudent(long id, UpdateStudentRequest request, UpdateStudentUseCase useCase)
+        private static async Task<Results<Ok<UpdateStudentResponse>, NotFound<string>>> UpdateStudent(int id, UpdateStudentRequest request, UpdateStudentUseCase useCase)
         {
             var result = await useCase.ExecuteAsync(id, request);
             return result.IsSuccess
@@ -57,7 +57,7 @@ namespace API.Modules
                 : TypedResults.NotFound(result.ErrorMessage);
         }
 
-        private static async Task<Results<NoContent, NotFound<string>, BadRequest<string>>> DeleteStudent(long id, DeleteStudentUseCase useCase)
+        private static async Task<Results<NoContent, NotFound<string>, BadRequest<string>>> DeleteStudent(int id, DeleteStudentUseCase useCase)
         {
             var result = await useCase.ExecuteAsync(id);
             

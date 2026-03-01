@@ -15,7 +15,7 @@ public record UpdateStudentRequest(
 );
 
 public record UpdateStudentResponse(
-    long Id,
+    int Id,
     string FirstName,
     string LastName,
     string PhoneNumber,

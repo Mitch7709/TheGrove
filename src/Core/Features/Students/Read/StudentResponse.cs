@@ -3,7 +3,7 @@ using System;
 namespace Core.Features.Students.Read;
 
 public record StudentResponse (
-    long Id,
+    int Id,
     string firstName,
     string lastName,
     string phoneNumber,

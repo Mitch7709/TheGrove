@@ -7,7 +7,7 @@ namespace Core.Features.Students.Delete;
 
 public class DeleteStudentUseCase(IDbContext dbContext)
 {
-    public async Task<Result> ExecuteAsync(long id)
+    public async Task<Result> ExecuteAsync(int id)
     {
         var student = await dbContext.Set<Student>().FindAsync(id);
         if (student is null)

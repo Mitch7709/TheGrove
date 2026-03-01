@@ -14,12 +14,11 @@ namespace API
 
             // Add services to the container.
             builder.Services.AddEndpointsApiExplorer()
+                            .AddOpenApi()
+                            .AddHttpContextAccessor()
                             .AddCustomConfiguration(builder.Configuration)
                             .AddDatabase()
                             .AddDepedencyInjection();
-
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
@@ -34,7 +33,8 @@ namespace API
             }
 
             app.UseHttpsRedirection()
-                .UseDatabase();
+                .UseDatabase()
+                .UseMinimalApiEndpoints();
 
             app.Run();
         }

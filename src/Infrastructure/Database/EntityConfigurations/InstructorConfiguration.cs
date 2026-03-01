@@ -28,7 +28,5 @@ public class InstructorConfiguration : IEntityTypeConfiguration<Instructor>
             .HasMaxLength(Instructor.MaxLength.Email);
         builder.Property(i => i.ImageUrl)
             .HasMaxLength(200);
-
-        var currentTime = new DateTime(2026, 2, 18, 2, 0, 0, DateTimeKind.Utc);
     }
 }

@@ -22,7 +22,7 @@ public class StudentReadService(IDbContext dbContext)
             .ToListAsync();
     }
 
-    public async Task<Result<StudentResponse>> GetByIdAsync(long id)
+    public async Task<Result<StudentResponse>> GetByIdAsync(int id)
     {
         var student = await dbContext.Set<Student>()
             .Where(s => s.Id == id)

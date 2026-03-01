@@ -6,7 +6,7 @@ namespace Core.Features.Students.Update;
 
 public class UpdateStudentUseCase(IDbContext dbContext)
 {
-    public async Task<Result<UpdateStudentResponse>> ExecuteAsync(long studentId, UpdateStudentRequest request)
+    public async Task<Result<UpdateStudentResponse>> ExecuteAsync(int studentId, UpdateStudentRequest request)
     {
         var student = await dbContext.Set<Student>().FindAsync(studentId);
         if (student is null)

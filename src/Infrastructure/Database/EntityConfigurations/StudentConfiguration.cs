@@ -38,7 +38,5 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
             .WithOne(b => b.Student)
             .HasForeignKey(b => b.StudentId)
             .OnDelete(DeleteBehavior.Restrict);
-
-            var currentTime = new DateTime(2026, 2, 18, 2, 0, 0, DateTimeKind.Utc);
     }
 }
