@@ -9,17 +9,17 @@ public class CreateStudentUseCase(IDbContext dbContext)
 {
     public async Task<CreateStudentResponse> ExecuteAsync(CreateStudentRequest request)
     {
+        var appUser = await dbContext.Set<AppUser>()
+            .SingleAsync(u => u.Id == request.AppUserId);
+        
         var student = new Student
         {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
+            UserId = appUser.Id,
+            AppUser = appUser,
             DateOfBirth = request.DateOfBirth,
-            Email = request.Email,
-            PhoneNumber = request.PhoneNumber,
             ImageUrl = request.ImageUrl,
             WaiverStatus = WaiverStatus.NotSigned
         };
-        student.Age = student.CalculateAge();
 
         dbContext.Set<Student>().Add(student);
         await dbContext.SaveChangesAsync();
@@ -27,11 +27,11 @@ public class CreateStudentUseCase(IDbContext dbContext)
         return new CreateStudentResponse
         (
             student.Id,
-            student.FirstName,
-            student.LastName,
+            appUser.FirstName,
+            appUser.LastName,
             student.DateOfBirth,
-            student.Email,
-            student.PhoneNumber
+            appUser.Email,
+            appUser.PhoneNumber
         );
     }
 }

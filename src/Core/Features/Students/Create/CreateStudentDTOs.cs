@@ -3,11 +3,8 @@ using System;
 namespace Core.Features.Students.Create;
 
 public record CreateStudentRequest(
-    string FirstName,
-    string LastName,
+    string AppUserId,
     DateOnly DateOfBirth,
-    string Email,
-    string PhoneNumber,
     string? ImageUrl
 );
 

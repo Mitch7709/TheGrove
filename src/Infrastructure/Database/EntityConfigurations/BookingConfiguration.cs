@@ -11,8 +11,8 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.ToTable("Bookings");
         builder.HasKey(b => b.Id);
 
-        builder.Property(b => b.BookingDate)
-            .IsRequired();
+        builder.Property(b => b.BookingDate);
+
         builder.Property(b => b.PaymentStatus)
             .IsRequired()
             .HasConversion<string>();

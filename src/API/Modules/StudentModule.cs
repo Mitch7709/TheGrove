@@ -5,6 +5,7 @@ using Core.Features.Students.Read;
 using Core.Models;
 using Core.Features.Students.Update;
 using Core.Features.Students.Delete;
+using Core.Features.Users.Register;
 
 
 namespace API.Modules
@@ -22,8 +23,8 @@ namespace API.Modules
             group.MapPut("/{id}", UpdateStudent)
                 .Validator<UpdateStudentRequest>();
 
-            group.MapPost("", CreateStudent)
-                .Validator<CreateStudentRequest>();
+            group.MapPost("", RegisterStudent)
+                .Validator<RegisterRequest>();
 
             group.MapDelete("/{id}", DeleteStudent);
         }
@@ -42,11 +43,17 @@ namespace API.Modules
                 : TypedResults.NotFound(result.ErrorMessage);
         }
 
-        private static async Task<Ok<CreateStudentResponse>> CreateStudent(CreateStudentRequest request, CreateStudentUseCase useCase)
+        private static async Task<Results<Ok<RegisterResponse>, BadRequest<string>, UnprocessableEntity<string>>> RegisterStudent(RegisterRequest request, RegisterUseCase useCase)
         {
-            var result = await useCase.ExecuteAsync(request);
+            var result = await useCase.Execute(request, UserRole.Student);
 
-            return TypedResults.Ok(result);
+            return result switch
+            {
+                { IsSuccess: true } => TypedResults.Ok(result.Value),
+                { IsFailure: true, ErrorType: ErrorType.ValidationError } => TypedResults.BadRequest(result.ErrorMessage),
+                { IsFailure: true, ErrorType: ErrorType.DataError } => TypedResults.UnprocessableEntity(result.ErrorMessage),
+                _ => throw new NotImplementedException()
+            };
         }
 
         private static async Task<Results<Ok<UpdateStudentResponse>, NotFound<string>>> UpdateStudent(int id, UpdateStudentRequest request, UpdateStudentUseCase useCase)

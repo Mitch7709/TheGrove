@@ -1,6 +1,7 @@
 using System;
 using Core.Models;
 using Core.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Features.Students.Update;
 
@@ -8,16 +9,18 @@ public class UpdateStudentUseCase(IDbContext dbContext)
 {
     public async Task<Result<UpdateStudentResponse>> ExecuteAsync(int studentId, UpdateStudentRequest request)
     {
-        var student = await dbContext.Set<Student>().FindAsync(studentId);
+        var student = await dbContext.Set<Student>()
+            .Include(s => s.AppUser)
+            .FirstOrDefaultAsync(s => s.Id == studentId);
+
         if (student is null)
             return Result.Failure(ErrorType.NotFound, $"Student with id {studentId} was not found");
 
-        student.FirstName = request.FirstName;
-        student.LastName = request.LastName;
-        student.PhoneNumber = request.PhoneNumber;
-        student.Email = request.Email;
+        student.AppUser.FirstName = request.FirstName;
+        student.AppUser.LastName = request.LastName;
+        student.AppUser.PhoneNumber = request.PhoneNumber;
+        student.AppUser.Email = request.Email;
         student.DateOfBirth = request.DateOfBirth;
-        student.Age = request.Age;
         student.ImageUrl = request.ImageUrl;
         student.WaiverStatus = request.WaiverStatus;
 
@@ -25,12 +28,11 @@ public class UpdateStudentUseCase(IDbContext dbContext)
 
         return new UpdateStudentResponse(
             student.Id,
-            student.FirstName,
-            student.LastName,
-            student.PhoneNumber,
-            student.Email,
+            student.AppUser.FirstName,
+            student.AppUser.LastName,
+            student.AppUser.PhoneNumber,
+            student.AppUser.Email,
             student.DateOfBirth,
-            student.Age,
             student.ImageUrl,
             student.WaiverStatus
         );

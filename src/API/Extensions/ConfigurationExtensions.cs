@@ -1,4 +1,5 @@
 ﻿using API.Configuration;
+using Infrastructure.Identity;
 
 namespace API.Extensions
 {
@@ -8,6 +9,10 @@ namespace API.Extensions
         {
             services.AddOptions<DBOptions>()
                 .Bind(configuration.GetSection("Database"))
+                .ValidateDataAnnotations();
+
+            services.AddOptions<JwtOptions>()
+                .Bind(configuration.GetSection("Jwt"))
                 .ValidateDataAnnotations();
 
             return services;

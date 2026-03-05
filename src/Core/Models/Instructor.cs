@@ -8,20 +8,14 @@ namespace Core.Models;
 
 public class Instructor : BaseEntity
 {
-    public static class MaxLength
+    public class MaxLength
     {
-        public const int FirstName = 50;
-        public const int LastName = 50;
         public const int Bio = 500;
-        public const int PhoneNumber = 20;
-        public const int Email = 100;
     }
 
     public int Id { get; set; }
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string PhoneNumber { get; set; } = string.Empty;
-    public string Bio { get; set; } = string.Empty;
-    public string ImageUrl { get; set; } = string.Empty;
+    public string UserId { get; set; } = string.Empty;
+    public required AppUser AppUser { get; set; }
+    public string? Bio { get; set; }
+    public string? ImageUrl { get; set; }
 }

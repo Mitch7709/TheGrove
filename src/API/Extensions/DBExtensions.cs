@@ -1,6 +1,8 @@
 using System;
 using API.Configuration;
+using Core.Models;
 using Infrastructure.Database;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -10,6 +12,10 @@ public static class DBExtensions
 {
     public static IServiceCollection AddDatabase(this IServiceCollection services)
     {
+        services.AddIdentityCore<AppUser>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>();
+        
         services.AddDbContext<AppDbContext>((serviceProvider, options) =>
         {
             var dbOptions = serviceProvider.GetRequiredService<IOptions<DBOptions>>().Value;

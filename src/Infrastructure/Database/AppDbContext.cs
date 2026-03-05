@@ -1,11 +1,12 @@
 using System;
 using Core.Models;
 using Core.Shared;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database;
 
-public class AppDbContext : DbContext, IDbContext
+public class AppDbContext : IdentityDbContext<AppUser>, IDbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

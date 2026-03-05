@@ -11,13 +11,15 @@ public class StudentReadService(IDbContext dbContext)
     public async Task<IReadOnlyList<StudentResponse>> GetAllAsync()
     {
         return await dbContext.Set<Student>()
+            .Include(s => s.AppUser)
             .Select(s => new StudentResponse
             (
                 s.Id,
-                s.FirstName,
-                s.LastName,
-                s.PhoneNumber,
-                s.Email
+                s.AppUser.FirstName,
+                s.AppUser.LastName,
+                s.AppUser.PhoneNumber,
+                s.AppUser.Email,
+                s.DateOfBirth
             ))
             .ToListAsync();
     }
@@ -25,14 +27,16 @@ public class StudentReadService(IDbContext dbContext)
     public async Task<Result<StudentResponse>> GetByIdAsync(int id)
     {
         var student = await dbContext.Set<Student>()
+            .Include(s => s.AppUser)
             .Where(s => s.Id == id)
             .Select(s => new StudentResponse
             (
                 s.Id,
-                s.FirstName,
-                s.LastName,
-                s.PhoneNumber,
-                s.Email
+                s.AppUser.FirstName,
+                s.AppUser.LastName,
+                s.AppUser.PhoneNumber,
+                s.AppUser.Email,
+                s.DateOfBirth
             ))
             .FirstOrDefaultAsync();
 

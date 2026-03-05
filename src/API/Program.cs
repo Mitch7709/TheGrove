@@ -18,6 +18,7 @@ namespace API
                             .AddHttpContextAccessor()
                             .AddCustomConfiguration(builder.Configuration)
                             .AddDatabase()
+                            .AddSecurity(builder.Configuration)
                             .AddDepedencyInjection();
 
             var app = builder.Build();
@@ -33,6 +34,9 @@ namespace API
             }
 
             app.UseHttpsRedirection()
+                .UseCors(Security.CorsPolicy)
+                .UseAuthentication()
+                .UseAuthorization()
                 .UseDatabase()
                 .UseMinimalApiEndpoints();
 
