@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Shared
+namespace Core.Shared;
+
+public interface IUserContext
 {
-    internal interface IUserContext
-    {
-    }
+    bool IsAuthenticated();
+    string? GetUserId();
 }

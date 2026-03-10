@@ -17,7 +17,6 @@
     <Folder Include="Features\Students\Delete\" />
     <Folder Include="Features\Students\Read\" />
     <Folder Include="Features\Students\Update\" />
-    <Folder Include="Features\Users\Login\" />
   </ItemGroup>
 
 </Project>

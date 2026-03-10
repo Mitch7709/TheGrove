@@ -1,7 +1,6 @@
-﻿namespace API.Modules
+﻿namespace API.Modules;
+
+public interface IModule
 {
-    public interface IModule
-    {
-        void MapEndpoints(IEndpointRouteBuilder app);
-    }
+    void MapEndpoints(IEndpointRouteBuilder app);
 }

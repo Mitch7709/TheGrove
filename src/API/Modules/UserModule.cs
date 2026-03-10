@@ -1,0 +1,45 @@
+﻿using API.Extensions;
+using Core.Features.Users.Login;
+using Core.Features.Users.Register;
+using Core.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
+
+namespace API.Modules;
+
+public class UserModule : IModule
+{
+    public void MapEndpoints(IEndpointRouteBuilder app)
+    {
+        app.MapPost("/register", Register)
+            .WithTags("Users")
+            .Validator<RegisterRequest>();
+
+        app.MapPost("/login", Login)
+            .WithTags("Users")
+            .Validator<LoginRequest>();
+    }
+
+    private static async Task<IResult> Login(LoginRequest request, LoginUseCase useCase)
+    {
+        var result = await useCase.Execute(request);
+
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Value)
+            : Results.Json(new { Error = result.ErrorMessage, Code = "UNAUTHORIZED_ACCESS"}, statusCode: 401);
+    }
+
+    private static async Task<Results<Ok<RegisterResponse>, BadRequest<string>, UnprocessableEntity<string>>> 
+        Register(RegisterRequest request, RegisterUseCase useCase)
+    {
+        var result = await useCase.Execute(request);
+
+        return result switch
+        {
+            { IsSuccess: true } => TypedResults.Ok(result.Value),
+            { IsFailure: true, ErrorType: ErrorType.ValidationError } => TypedResults.BadRequest(result.ErrorMessage),
+            { IsFailure: true } => TypedResults.UnprocessableEntity(result.ErrorMessage),
+            _ => throw new NotImplementedException()
+        };
+    }
+
+}

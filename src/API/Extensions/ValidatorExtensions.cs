@@ -1,13 +1,12 @@
 ﻿using API.Filters;
 
-namespace API.Extensions
+namespace API.Extensions;
+
+public static class ValidatorExtensions
 {
-    public static class ValidatorExtensions
+    public static RouteHandlerBuilder Validator<T>(this RouteHandlerBuilder builder) where T : class
     {
-        public static RouteHandlerBuilder Validator<T>(this RouteHandlerBuilder builder) where T : class
-        {
-            builder.AddEndpointFilter<EndpointValidationFilter<T>>();
-            return builder;
-        }
+        builder.AddEndpointFilter<EndpointValidationFilter<T>>();
+        return builder;
     }
 }

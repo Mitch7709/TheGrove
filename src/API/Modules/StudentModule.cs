@@ -8,72 +8,55 @@ using Core.Features.Students.Delete;
 using Core.Features.Users.Register;
 
 
-namespace API.Modules
+namespace API.Modules;
+
+public class StudentModule : IModule
 {
-    public class StudentModule : IModule
+    public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        public void MapEndpoints(IEndpointRouteBuilder app)
-        {
-            var group = app.MapGroup("/students")
-                .WithTags("Students");
+        var group = app.MapGroup("/students")
+            .WithTags("Students");
 
-            group.MapGet("", GetStudents);
-            group.MapGet("/{id}", GetStudentById);
+        group.MapGet("", GetStudents);
+        group.MapGet("/{id}", GetStudentById);
 
-            group.MapPut("/{id}", UpdateStudent)
-                .Validator<UpdateStudentRequest>();
+        group.MapPut("/{id}", UpdateStudent)
+            .Validator<UpdateStudentRequest>();
 
-            group.MapPost("", RegisterStudent)
-                .Validator<RegisterRequest>();
+        group.MapDelete("/{id}", DeleteStudent);
+    }
 
-            group.MapDelete("/{id}", DeleteStudent);
-        }
+    private static async Task<Ok<IReadOnlyList<StudentResponse>>> GetStudents(StudentReadService service)
+    {
+        var result = await service.GetAllAsync();
+        return TypedResults.Ok(result);
+    }
 
-        private static async Task<Ok<IReadOnlyList<StudentResponse>>> GetStudents(StudentReadService service)
-        {
-            var result = await service.GetAllAsync();
-            return TypedResults.Ok(result);
-        }
+    private static async Task<Results<Ok<StudentResponse>, NotFound<string>>> GetStudentById(int id, StudentReadService service)
+    {
+        var result = await service.GetByIdAsync(id);
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Value)
+            : TypedResults.NotFound(result.ErrorMessage);
+    }
 
-        private static async Task<Results<Ok<StudentResponse>, NotFound<string>>> GetStudentById(int id, StudentReadService service)
-        {
-            var result = await service.GetByIdAsync(id);
-            return result.IsSuccess
-                ? TypedResults.Ok(result.Value)
-                : TypedResults.NotFound(result.ErrorMessage);
-        }
+    private static async Task<Results<Ok<UpdateStudentResponse>, NotFound<string>>> UpdateStudent(int id, UpdateStudentRequest request, UpdateStudentUseCase useCase)
+    {
+        var result = await useCase.ExecuteAsync(id, request);
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Value)
+            : TypedResults.NotFound(result.ErrorMessage);
+    }
 
-        private static async Task<Results<Ok<RegisterResponse>, BadRequest<string>, UnprocessableEntity<string>>> RegisterStudent(RegisterRequest request, RegisterUseCase useCase)
-        {
-            var result = await useCase.Execute(request, UserRole.Student);
+    private static async Task<Results<NoContent, NotFound<string>, BadRequest<string>>> DeleteStudent(int id, DeleteStudentUseCase useCase)
+    {
+        var result = await useCase.ExecuteAsync(id);
+        
+        if (result.IsSuccess) 
+            return TypedResults.NoContent();
 
-            return result switch
-            {
-                { IsSuccess: true } => TypedResults.Ok(result.Value),
-                { IsFailure: true, ErrorType: ErrorType.ValidationError } => TypedResults.BadRequest(result.ErrorMessage),
-                { IsFailure: true, ErrorType: ErrorType.DataError } => TypedResults.UnprocessableEntity(result.ErrorMessage),
-                _ => throw new NotImplementedException()
-            };
-        }
-
-        private static async Task<Results<Ok<UpdateStudentResponse>, NotFound<string>>> UpdateStudent(int id, UpdateStudentRequest request, UpdateStudentUseCase useCase)
-        {
-            var result = await useCase.ExecuteAsync(id, request);
-            return result.IsSuccess
-                ? TypedResults.Ok(result.Value)
-                : TypedResults.NotFound(result.ErrorMessage);
-        }
-
-        private static async Task<Results<NoContent, NotFound<string>, BadRequest<string>>> DeleteStudent(int id, DeleteStudentUseCase useCase)
-        {
-            var result = await useCase.ExecuteAsync(id);
-            
-            if (result.IsSuccess) 
-                return TypedResults.NoContent();
-
-            return result.ErrorType == ErrorType.NotFound
-                ? TypedResults.NotFound(result.ErrorMessage)
-                : TypedResults.BadRequest(result.ErrorMessage);
-        }
+        return result.ErrorType == ErrorType.NotFound
+            ? TypedResults.NotFound(result.ErrorMessage)
+            : TypedResults.BadRequest(result.ErrorMessage);
     }
 }

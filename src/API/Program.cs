@@ -4,43 +4,42 @@ using API.Extensions;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace API
+namespace API;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Add services to the container.
+        builder.Services.AddEndpointsApiExplorer()
+                        .AddOpenApi()
+                        .AddHttpContextAccessor()
+                        .AddCustomConfiguration(builder.Configuration)
+                        .AddDatabase()
+                        .AddSecurity(builder.Configuration)
+                        .AddDepedencyInjection();
+
+        var app = builder.Build();
+
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-            builder.Services.AddEndpointsApiExplorer()
-                            .AddOpenApi()
-                            .AddHttpContextAccessor()
-                            .AddCustomConfiguration(builder.Configuration)
-                            .AddDatabase()
-                            .AddSecurity(builder.Configuration)
-                            .AddDepedencyInjection();
-
-            var app = builder.Build();
-
-            using var scope = app.Services.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            dbContext.Database.Migrate();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
-
-            app.UseHttpsRedirection()
-                .UseCors(Security.CorsPolicy)
-                .UseAuthentication()
-                .UseAuthorization()
-                .UseDatabase()
-                .UseMinimalApiEndpoints();
-
-            app.Run();
+            app.MapOpenApi();
         }
+
+        app.UseHttpsRedirection()
+            .UseCors(Security.CorsPolicy)
+            .UseAuthentication()
+            .UseAuthorization()
+            .UseDatabase()
+            .UseMinimalApiEndpoints();
+
+        app.Run();
     }
 }

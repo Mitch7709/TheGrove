@@ -3,10 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Features.Users
+namespace Core.Features.Users;
+
+public interface ITokenService
 {
-    public interface ITokenService
-    {
-        Task<string> GenerateToken(AppUser user);
-    }
+    Task<string> GenerateToken(AppUser user);
 }

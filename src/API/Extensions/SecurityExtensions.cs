@@ -3,57 +3,61 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace API.Extensions
+namespace API.Extensions;
+
+public static class Security
 {
-    public static class Security
+    public const string CorsPolicy = "OpenCorsPolicy";
+    public const string AdminPolicy = "Admin"; 
+    public const string InstructorPolicy = "Instructor";
+}
+
+public static class SecurityExtensions
+{
+    public static IServiceCollection AddSecurity(this IServiceCollection services, IConfiguration configuration)
     {
-        public const string CorsPolicy = "OpenCorsPolicy";
-        public const string AdminPolicy = "Admin"; 
-    }
-    
-    public static class SecurityExtensions
-    {
-        public static IServiceCollection AddSecurity(this IServiceCollection services, IConfiguration configuration)
+        var jwtOptions = new JwtOptions();
+        configuration.GetSection("Jwt").Bind(jwtOptions);
+
+        services.AddAuthentication(o =>
         {
-            var jwtOptions = new JwtOptions();
-            configuration.GetSection("Jwt").Bind(jwtOptions);
-
-            services.AddAuthentication(o =>
+            o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(o =>
+        {
+            o.TokenValidationParameters = new TokenValidationParameters
             {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtOptions.Issuer,
+                ValidAudience = jwtOptions.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
+            };
+        });
+
+        services.AddAuthorizationBuilder()
+            .AddPolicy(Security.AdminPolicy, policy =>
+            {
+                policy.RequireRole("Admin");
             })
-            .AddJwtBearer(o =>
+            .AddPolicy(Security.InstructorPolicy, policy =>
             {
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtOptions.Issuer,
-                    ValidAudience = jwtOptions.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
-                };
+                policy.RequireRole("Instructor");
             });
 
-            services.AddAuthorizationBuilder()
-                .AddPolicy(Security.AdminPolicy, policy =>
-                {
-                    policy.RequireRole("Admin");
-                });
-
-            services.AddCors(policy =>
+        services.AddCors(policy =>
+        {
+            policy.AddPolicy(Security.CorsPolicy, opt =>
             {
-                policy.AddPolicy(Security.CorsPolicy, opt =>
-                {
-                    opt.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-                });
+                opt.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
             });
-            return services;
-        }
+        });
+        return services;
     }
 }
