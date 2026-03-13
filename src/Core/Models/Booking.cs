@@ -18,6 +18,10 @@ public class Booking : BaseEntity
     public string ConfirmationId { get; set; } = string.Empty;
     public decimal PriceAtBooking { get; set; }
     public BookingStatus BookingStatus { get; set; }
+
+    public string GenerateConfirmationId() {
+        return Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+    }
 }
 
 public enum PaymentStatus

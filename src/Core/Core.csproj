@@ -16,7 +16,6 @@
   <ItemGroup>
     <Folder Include="Features\Students\Delete\" />
     <Folder Include="Features\Students\Read\" />
-    <Folder Include="Features\Students\Update\" />
   </ItemGroup>
 
 </Project>

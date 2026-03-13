@@ -27,6 +27,7 @@ public static class DependencyExtensions
         services.AddTransient<UpdateStudentUseCase>();
         services.AddTransient<StudentReadService>();
         services.AddTransient<DeleteStudentUseCase>();
+        services.AddValidatorsFromAssemblyContaining<UpdateStudentValidator>();
 
         services.AddTransient<CreateInstructorUseCase>();
         services.AddTransient<UpdateInstructorUseCase>();

@@ -25,8 +25,5 @@ public class RegisterValidator : AbstractValidator<RegisterRequest>
 
         RuleFor(x => x.PhoneNumber)
             .Matches(@"^\d{3}-?\d{3}-?\d{4}$");
-
-        RuleFor(x => x.DateOfBirth)
-            .NotEmpty();
     }
 }

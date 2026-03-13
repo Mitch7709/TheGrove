@@ -8,11 +8,10 @@ public record RegisterRequest(
     string LastName,
     string Email,
     string PhoneNumber,
-    DateOnly DateOfBirth,
+    DateOnly? DateOfBirth,
     string? Bio,
     string? ImageUrl,
-    string Password,
-    UserRole Role
+    string Password
     );
 
 public record RegisterResponse(

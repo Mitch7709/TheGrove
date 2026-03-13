@@ -1,4 +1,6 @@
-﻿namespace Core.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace Core.Models;
 
 public class Student : BaseEntity
 {
@@ -6,21 +8,25 @@ public class Student : BaseEntity
     public string UserId { get; set; } = string.Empty;
     public required AppUser AppUser { get; set; }
     public string? ImageUrl { get; set; }
-    public DateOnly DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
     public WaiverStatus WaiverStatus { get; set; }
 
     public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
     public int CalculateAge()
     {
+        if (!DateOfBirth.HasValue)
+            return 0;
+            
         var today = DateOnly.FromDateTime(DateTime.Today);
-        var age = today.Year - DateOfBirth.Year;
-        if (DateOfBirth > today.AddYears(-age))
+        var age = today.Year - DateOfBirth.Value.Year;
+        if (DateOfBirth.Value > today.AddYears(-age))
             age--;
         return age;
     }
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum WaiverStatus
 {
     NotSigned,

@@ -15,6 +15,13 @@ public class DeleteInstructorUseCase(IDbContext dbContext)
         }
 
         dbContext.Set<Instructor>().Remove(instructor);
+
+        var appUser = await dbContext.Set<AppUser>().FindAsync(instructor.UserId);
+        if (appUser is not null)
+        {
+            dbContext.Set<AppUser>().Remove(appUser);
+        }
+
         await dbContext.SaveChangesAsync();
         return Result.Success();
     }

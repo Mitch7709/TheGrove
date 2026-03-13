@@ -1,6 +1,7 @@
 using System;
 using Core.Models;
 using Core.Shared;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Features.Students.Update;
@@ -16,13 +17,14 @@ public class UpdateStudentUseCase(IDbContext dbContext)
         if (student is null)
             return Result.Failure(ErrorType.NotFound, $"Student with id {studentId} was not found");
 
+        // Update custom properties directly on the existing tracked entity
         student.AppUser.FirstName = request.FirstName;
         student.AppUser.LastName = request.LastName;
-        student.AppUser.PhoneNumber = request.PhoneNumber;
         student.AppUser.Email = request.Email;
+        student.AppUser.PhoneNumber = request.PhoneNumber;
         student.DateOfBirth = request.DateOfBirth;
         student.ImageUrl = request.ImageUrl;
-        student.WaiverStatus = request.WaiverStatus;
+        student.WaiverStatus = Enum.Parse<WaiverStatus>(request.WaiverStatus, ignoreCase: true);
 
         await dbContext.SaveChangesAsync();
 

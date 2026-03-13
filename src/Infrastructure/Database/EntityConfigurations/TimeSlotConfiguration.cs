@@ -19,9 +19,5 @@ public class TimeSlotConfiguration : IEntityTypeConfiguration<TimeSlot>
             .HasConversion<string>();
         builder.Property(ts => ts.IsActive)
             .IsRequired();
-        builder.HasOne(ts => ts.Room)
-            .WithMany()
-            .HasForeignKey(ts => ts.RoomId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

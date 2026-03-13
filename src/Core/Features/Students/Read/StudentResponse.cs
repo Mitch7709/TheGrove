@@ -8,5 +8,5 @@ public record StudentResponse (
     string LastName,
     string PhoneNumber,
     string Email,
-    DateOnly DateOfBirth
+    DateOnly? DateOfBirth
 );

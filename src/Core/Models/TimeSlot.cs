@@ -7,8 +7,6 @@ public class TimeSlot : BaseEntity
     public int DurationInMinutes { get; set; }
     public DayOfWeek DayOfWeek { get; set; }
     public bool IsActive { get; set; }
-    public int RoomId { get; set; }
-    public Room Room { get; set; } = null!;
 }
 
 public enum DayOfWeek

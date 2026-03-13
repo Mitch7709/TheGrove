@@ -10,7 +10,10 @@ public class UserModule : IModule
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapPost("/register", Register)
+        app.MapPost("/register/student", RegisterStudent)
+            .WithTags("Users")
+            .Validator<RegisterRequest>();
+        app.MapPost("/register/instructor", RegisterInstructor)
             .WithTags("Users")
             .Validator<RegisterRequest>();
 
@@ -29,9 +32,23 @@ public class UserModule : IModule
     }
 
     private static async Task<Results<Ok<RegisterResponse>, BadRequest<string>, UnprocessableEntity<string>>> 
-        Register(RegisterRequest request, RegisterUseCase useCase)
+        RegisterStudent(RegisterRequest request, RegisterUseCase useCase)
     {
-        var result = await useCase.Execute(request);
+        var result = await useCase.Execute(request, UserRole.Student);
+
+        return result switch
+        {
+            { IsSuccess: true } => TypedResults.Ok(result.Value),
+            { IsFailure: true, ErrorType: ErrorType.ValidationError } => TypedResults.BadRequest(result.ErrorMessage),
+            { IsFailure: true } => TypedResults.UnprocessableEntity(result.ErrorMessage),
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    private static async Task<Results<Ok<RegisterResponse>, BadRequest<string>, UnprocessableEntity<string>>> 
+        RegisterInstructor(RegisterRequest request, RegisterUseCase useCase)
+    {
+        var result = await useCase.Execute(request, UserRole.Instructor);
 
         return result switch
         {

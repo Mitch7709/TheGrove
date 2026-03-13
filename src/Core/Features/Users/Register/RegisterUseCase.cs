@@ -10,12 +10,28 @@ public class RegisterUseCase(
     CreateStudentUseCase createStudentUseCase,
     CreateInstructorUseCase createInstructorUseCase)
 {
-    public async Task<Result<RegisterResponse>> Execute(RegisterRequest request)
+    public async Task<Result<RegisterResponse>> Execute(RegisterRequest request, UserRole role)
     {
         var existingUser = await userService.FindByEmail(request.Email);
         if (existingUser != null)
         {
             return Result.Failure(ErrorType.ValidationError, "User already exists with this email.");
+        }
+
+        switch (role)
+        {
+            case UserRole.Student:
+                if (request.DateOfBirth is null)
+                {
+                    return Result.Failure(ErrorType.ValidationError, "Date of birth is required for students.");
+                }
+                break;
+            case UserRole.Instructor:
+                if (request.Bio is null)
+                {
+                    return Result.Failure(ErrorType.ValidationError, "Bio is required for instructors.");
+                }
+                break;
         }
 
         var user = new AppUser
@@ -26,13 +42,13 @@ public class RegisterUseCase(
             request.PhoneNumber
         );
 
-        var result = await userService.Register(user, request.Password, request.Role);
+        var result = await userService.Register(user, request.Password, role);
         if (result.IsFailure)
         {
             return Result.Failure(result.ErrorType.Value, result.ErrorMessage);
         }
 
-        switch (request.Role)
+        switch (role)
         {
             case UserRole.Student:
                 var studentRequest = new CreateStudentRequest(user.Id, request.DateOfBirth, request.ImageUrl);
