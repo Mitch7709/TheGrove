@@ -33,6 +33,7 @@ public static class DependencyExtensions
         services.AddTransient<UpdateInstructorUseCase>();
         services.AddTransient<InstructorReadService>();
         services.AddTransient<DeleteInstructorUseCase>();
+        services.AddValidatorsFromAssemblyContaining<UpdateInstructorValidator>();
 
         services.AddTransient<RegisterUseCase>();
         services.AddValidatorsFromAssemblyContaining<RegisterValidator>();

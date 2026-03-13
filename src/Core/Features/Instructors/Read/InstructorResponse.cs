@@ -4,8 +4,10 @@ namespace Core.Features.Instructors.Read;
 
 public record InstructorResponse(
     int Id,
-    string firstName,
-    string lastName,
-    string phoneNumber,
-    string email
+    string FirstName,
+    string LastName,
+    string PhoneNumber,
+    string Email,
+    string Bio,
+    string ImageUrl
 );

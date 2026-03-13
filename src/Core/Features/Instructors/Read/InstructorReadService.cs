@@ -17,7 +17,9 @@ public class InstructorReadService(IDbContext dbContext)
                 i.AppUser.FirstName,
                 i.AppUser.LastName,
                 i.AppUser.PhoneNumber,
-                i.AppUser.Email
+                i.AppUser.Email,
+                i.Bio ?? string.Empty,
+                i.ImageUrl ?? string.Empty
             ))
             .ToListAsync();
     }
@@ -33,7 +35,9 @@ public class InstructorReadService(IDbContext dbContext)
                 i.AppUser.FirstName,
                 i.AppUser.LastName,
                 i.AppUser.PhoneNumber,
-                i.AppUser.Email
+                i.AppUser.Email,
+                i.Bio ?? string.Empty,
+                i.ImageUrl ?? string.Empty
             ))
             .FirstOrDefaultAsync();
 
