@@ -1,4 +1,8 @@
 ﻿using API.Shared;
+using Core.Features.ClassTypes.Create;
+using Core.Features.ClassTypes.Delete;
+using Core.Features.ClassTypes.Read;
+using Core.Features.ClassTypes.Update;
 using Core.Features.Instructors.Create;
 using Core.Features.Instructors.Delete;
 using Core.Features.Instructors.Read;
@@ -34,6 +38,14 @@ public static class DependencyExtensions
         services.AddTransient<InstructorReadService>();
         services.AddTransient<DeleteInstructorUseCase>();
         services.AddValidatorsFromAssemblyContaining<UpdateInstructorValidator>();
+
+        services.AddTransient<CreateClassTypeUseCase>();
+        services.AddTransient<UpdateClassTypeUseCase>();
+        services.AddTransient<ClassTypeReadService>();
+        services.AddTransient<DeleteClassTypeUseCase>();
+        services.AddValidatorsFromAssemblyContaining<UpdateClassTypeValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateClassTypeValidator>();
+
 
         services.AddTransient<RegisterUseCase>();
         services.AddValidatorsFromAssemblyContaining<RegisterValidator>();

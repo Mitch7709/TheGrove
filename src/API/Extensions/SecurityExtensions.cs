@@ -10,6 +10,7 @@ public static class Security
     public const string CorsPolicy = "OpenCorsPolicy";
     public const string AdminPolicy = "Admin"; 
     public const string InstructorPolicy = "Instructor";
+    public const string NonStudentPolicy = "NonStudent";
 }
 
 public static class SecurityExtensions
@@ -47,6 +48,10 @@ public static class SecurityExtensions
             .AddPolicy(Security.InstructorPolicy, policy =>
             {
                 policy.RequireRole("Instructor");
+            })
+            .AddPolicy(Security.NonStudentPolicy, policy =>
+            {
+                policy.RequireRole("Admin", "Instructor");
             });
 
         services.AddCors(policy =>
