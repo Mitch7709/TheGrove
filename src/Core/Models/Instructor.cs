@@ -18,4 +18,6 @@ public class Instructor : BaseEntity
     public required AppUser AppUser { get; set; }
     public string? Bio { get; set; }
     public string? ImageUrl { get; set; }
+
+    public ICollection<ClassType> QualifiedClassTypes { get; set; } = [];
 }

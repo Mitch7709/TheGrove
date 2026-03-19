@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Core.Features.ClassTypes.Create;
 
@@ -7,7 +8,8 @@ public record CreateClassTypeRequest(
     string Description,
     string Style,
     int Level,
-    bool IsActive
+    bool IsActive,
+    IReadOnlyList<int> QualifiedInstructorIds
 );
 
 public record CreateClassTypeResponse(
@@ -16,5 +18,6 @@ public record CreateClassTypeResponse(
     string Description,
     string Style,
     int Level,
-    bool IsActive
+    bool IsActive,
+    IReadOnlyList<QualifiedInstructorSummary> QualifiedInstructors
 );

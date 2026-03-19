@@ -21,4 +21,6 @@ public class ClassType : BaseEntity
     public string Style { get; set; } = string.Empty;
     public int Level { get; set; }
     public bool IsActive { get; set; }
+
+    public ICollection<Instructor> QualifiedInstructors { get; set; } = [];
 }

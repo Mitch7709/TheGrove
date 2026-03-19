@@ -22,5 +22,9 @@ public class ClassTypeConfiguration : IEntityTypeConfiguration<ClassType>
             .IsRequired();
         builder.Property(ct => ct.IsActive)
             .IsRequired();
+
+        builder.HasMany(ct => ct.QualifiedInstructors)
+            .WithMany(i => i.QualifiedClassTypes)
+            .UsingEntity(j => j.ToTable("InstructorClassTypes"));
     }
 }

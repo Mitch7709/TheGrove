@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Models;
 using Core.Shared;
@@ -15,6 +16,14 @@ public class CreateClassTypeUseCase(IDbContext dbContext)
         if (exists)
             return Result.Failure(ErrorType.Conflict, $"A class type with the name '{request.Name}' already exists.");
 
+        var instructors = await dbContext.Set<Instructor>()
+            .Include(i => i.AppUser)
+            .Where(i => request.QualifiedInstructorIds.Contains(i.Id))
+            .ToListAsync();
+
+        if (instructors.Count != request.QualifiedInstructorIds.Count)
+            return Result.Failure(ErrorType.ValidationError, "One or more instructor IDs are invalid.");
+
         var classType = new ClassType
         {
             Name = request.Name,
@@ -24,17 +33,24 @@ public class CreateClassTypeUseCase(IDbContext dbContext)
             IsActive = request.IsActive
         };
 
+        foreach (var instructor in instructors)
+            classType.QualifiedInstructors.Add(instructor);
+
         dbContext.Set<ClassType>().Add(classType);
         await dbContext.SaveChangesAsync();
 
-        return new CreateClassTypeResponse
-        (
+        return new CreateClassTypeResponse(
             classType.Id,
             classType.Name,
             classType.Description,
             classType.Style,
             classType.Level,
-            classType.IsActive
+            classType.IsActive,
+            instructors.Select(i => new QualifiedInstructorSummary(
+                i.Id,
+                i.AppUser.FirstName,
+                i.AppUser.LastName
+            )).ToList()
         );
     }
 }

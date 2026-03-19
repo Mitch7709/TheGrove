@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Core.Features.ClassTypes.Read;
 
@@ -8,5 +9,6 @@ public record ClassTypeResponse(
     string Description,
     string Style,
     int Level,
-    bool IsActive
+    bool IsActive,
+    IReadOnlyList<QualifiedInstructorSummary> QualifiedInstructors
 );
