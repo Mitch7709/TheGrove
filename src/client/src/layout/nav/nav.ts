@@ -7,12 +7,11 @@ import { Routes } from '@angular/router';
   templateUrl: './nav.html',
   styleUrl: './nav.css',
 })
-export class Nav {
+export class Nav implements OnInit {
 
-
-  // ngOnInit(): void {
-  //   document.documentElement.setAttribute('data-theme', 'autumn');
-  // }
+  ngOnInit(): void {
+    document.documentElement.setAttribute('data-theme', 'emerald');
+  }
 }
 
 // export const routes: Routes = [

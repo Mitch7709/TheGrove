@@ -1,4 +1,6 @@
-﻿namespace Core.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace Core.Models;
 
 public class TimeSlot : BaseEntity
 {
@@ -9,6 +11,7 @@ public class TimeSlot : BaseEntity
     public bool IsActive { get; set; }
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum DayOfWeek
 {
     Monday,

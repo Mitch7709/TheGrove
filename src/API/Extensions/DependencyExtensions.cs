@@ -7,10 +7,18 @@ using Core.Features.Instructors.Create;
 using Core.Features.Instructors.Delete;
 using Core.Features.Instructors.Read;
 using Core.Features.Instructors.Update;
+using Core.Features.Sessions.Create;
+using Core.Features.Sessions.Delete;
+using Core.Features.Sessions.Read;
+using Core.Features.Sessions.Update;
 using Core.Features.Students.Create;
 using Core.Features.Students.Delete;
 using Core.Features.Students.Read;
 using Core.Features.Students.Update;
+using Core.Features.TimeSlots.Create;
+using Core.Features.TimeSlots.Delete;
+using Core.Features.TimeSlots.Read;
+using Core.Features.TimeSlots.Update;
 using Core.Features.Users;
 using Core.Features.Users.Login;
 using Core.Features.Users.Register;
@@ -45,6 +53,20 @@ public static class DependencyExtensions
         services.AddTransient<DeleteClassTypeUseCase>();
         services.AddValidatorsFromAssemblyContaining<UpdateClassTypeValidator>();
         services.AddValidatorsFromAssemblyContaining<CreateClassTypeValidator>();
+
+        services.AddTransient<CreateTimeSlotUseCase>();
+        services.AddTransient<UpdateTimeSlotUseCase>();
+        services.AddTransient<TimeSlotReadService>();
+        services.AddTransient<DeleteTimeSlotUseCase>();
+        services.AddValidatorsFromAssemblyContaining<UpdateTimeSlotValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateTimeSlotValidator>();
+
+        services.AddTransient<CreateSessionUseCase>();
+        services.AddTransient<UpdateSessionUseCase>();
+        services.AddTransient<SessionReadService>();
+        services.AddTransient<DeleteSessionUseCase>();
+        services.AddValidatorsFromAssemblyContaining<UpdateSessionValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateSessionValidator>();
 
 
         services.AddTransient<RegisterUseCase>();

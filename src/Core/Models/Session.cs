@@ -9,8 +9,8 @@ namespace Core.Models;
 public class Session : BaseEntity
 {
     public int Id { get; set; }
-    public int StudentId { get; set; }
-    public Student Student { get; set; } = null!;
+    public int ClassTypeId { get; set; }
+    public ClassType ClassType { get; set; } = null!;
     public int InstructorId { get; set; }
     public Instructor Instructor { get; set; } = null!;
     public int TimeSlotId { get; set; }

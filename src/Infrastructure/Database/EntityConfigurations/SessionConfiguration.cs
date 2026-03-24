@@ -15,9 +15,9 @@ public class SessionConfiguration : IEntityTypeConfiguration<Session>
         builder.Property(s => s.Price)
             .IsRequired()
             .HasColumnType("decimal(18,2)");
-        builder.HasOne(s => s.Student)
+        builder.HasOne(s => s.ClassType)
             .WithMany()
-            .HasForeignKey(s => s.StudentId)
+            .HasForeignKey(s => s.ClassTypeId)
             .OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(s => s.Instructor)
             .WithMany()
