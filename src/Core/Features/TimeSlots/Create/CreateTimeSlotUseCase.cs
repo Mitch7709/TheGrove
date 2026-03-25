@@ -8,8 +8,10 @@ public class CreateTimeSlotUseCase(IDbContext dbContext)
 {
     public async Task<Result<CreateTimeSlotResponse>> ExecuteAsync(CreateTimeSlotRequest request)
     {
+        var dayOfWeekParsed = Enum.Parse<DayOfWeek>(request.DayOfWeek, ignoreCase: true);
+
         var exists = await dbContext.Set<TimeSlot>()
-            .AnyAsync(ts => ts.DayOfWeek == request.DayOfWeek
+            .AnyAsync(ts => ts.DayOfWeek == dayOfWeekParsed
                 && ts.StartTime == request.StartTime
                 && ts.DurationInMinutes == request.DurationInMinutes);
 
@@ -22,7 +24,7 @@ public class CreateTimeSlotUseCase(IDbContext dbContext)
         {
             StartTime = request.StartTime,
             DurationInMinutes = request.DurationInMinutes,
-            DayOfWeek = request.DayOfWeek,
+            DayOfWeek = dayOfWeekParsed,
             IsActive = request.IsActive
         };
 

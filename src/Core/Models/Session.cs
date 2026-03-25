@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Core.Models;
@@ -16,6 +17,23 @@ public class Session : BaseEntity
     public int TimeSlotId { get; set; }
     public TimeSlot TimeSlot { get; set; } = null!;
     public decimal Price { get; set; }
+    public DateOnly SessionDate { get; set; }
+    public SessionStatus Status { get; set; }
 
     public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+    public DateOnly FindClosestDateFromTimeSlot()
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var daysUntilNextSession = ((int)TimeSlot.DayOfWeek - (int)today.DayOfWeek + 7) % 7;
+        return today.AddDays(daysUntilNextSession);
+    }
+}
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum SessionStatus
+{
+    Scheduled,
+    Completed,
+    Cancelled
 }

@@ -8,6 +8,8 @@ public class UpdateTimeSlotUseCase(IDbContext dbContext)
 {
     public async Task<Result<UpdateTimeSlotResponse>> ExecuteAsync(int timeSlotId, UpdateTimeSlotRequest request)
     {
+        var dayOfWeekParsed = Enum.Parse<DayOfWeek>(request.DayOfWeek, ignoreCase: true);
+
         var timeSlot = await dbContext.Set<TimeSlot>()
             .FirstOrDefaultAsync(ts => ts.Id == timeSlotId);
 
@@ -18,7 +20,7 @@ public class UpdateTimeSlotUseCase(IDbContext dbContext)
 
         var exists = await dbContext.Set<TimeSlot>()
             .AnyAsync(ts => ts.Id != timeSlotId
-                && ts.DayOfWeek == request.DayOfWeek
+                && ts.DayOfWeek == dayOfWeekParsed
                 && ts.StartTime == request.StartTime
                 && ts.DurationInMinutes == request.DurationInMinutes);
 
@@ -29,7 +31,7 @@ public class UpdateTimeSlotUseCase(IDbContext dbContext)
 
         timeSlot.StartTime = request.StartTime;
         timeSlot.DurationInMinutes = request.DurationInMinutes;
-        timeSlot.DayOfWeek = request.DayOfWeek;
+        timeSlot.DayOfWeek = dayOfWeekParsed;
         timeSlot.IsActive = request.IsActive;
 
         await dbContext.SaveChangesAsync();

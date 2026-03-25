@@ -1,3 +1,4 @@
+using Core.Models;
 using FluentValidation;
 
 namespace Core.Features.TimeSlots.Update;
@@ -13,7 +14,7 @@ public class UpdateTimeSlotValidator : AbstractValidator<UpdateTimeSlotRequest>
             .WithMessage("DurationInMinutes must be less than or equal to 1440.");
 
         RuleFor(x => x.DayOfWeek)
-            .IsInEnum()
+            .Must(value => Enum.TryParse<DayOfWeek>(value, ignoreCase: true, out _))
             .WithMessage("DayOfWeek is invalid.");
     }
 }

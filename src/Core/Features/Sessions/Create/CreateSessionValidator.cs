@@ -21,5 +21,13 @@ public class CreateSessionValidator : AbstractValidator<CreateSessionRequest>
         RuleFor(x => x.Price)
             .GreaterThan(0)
             .WithMessage("Price must be greater than 0.");
+
+        RuleFor(x => x.SessionDate)
+            .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Today))
+            .WithMessage("SessionDate must be today or in the future.");
+
+        RuleFor(x => x.Status)
+            .IsInEnum()
+            .WithMessage("Status must be a valid SessionStatus value.");
     }
 }

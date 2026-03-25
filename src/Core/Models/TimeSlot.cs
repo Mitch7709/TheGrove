@@ -10,15 +10,3 @@ public class TimeSlot : BaseEntity
     public DayOfWeek DayOfWeek { get; set; }
     public bool IsActive { get; set; }
 }
-
-[JsonConverter(typeof(JsonStringEnumConverter))]
-public enum DayOfWeek
-{
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday
-}

@@ -1,10 +1,14 @@
+using Core.Models;
+
 namespace Core.Features.Sessions.Create;
 
 public record CreateSessionRequest(
     int ClassTypeId,
     int InstructorId,
     int TimeSlotId,
-    decimal Price
+    decimal Price,
+    DateOnly SessionDate,
+    SessionStatus Status
 );
 
 public record CreateSessionResponse(
@@ -12,5 +16,7 @@ public record CreateSessionResponse(
     int ClassTypeId,
     int InstructorId,
     int TimeSlotId,
-    decimal Price
+    decimal Price,
+    DateOnly SessionDate,
+    SessionStatus Status
 );

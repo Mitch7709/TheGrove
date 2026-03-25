@@ -19,6 +19,7 @@ public class TimeSlotReadService(IDbContext dbContext)
                 ts.DayOfWeek,
                 ts.IsActive
             ))
+            .AsNoTracking()
             .ToListAsync();
     }
 

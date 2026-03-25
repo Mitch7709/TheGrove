@@ -15,6 +15,13 @@ public class SessionConfiguration : IEntityTypeConfiguration<Session>
         builder.Property(s => s.Price)
             .IsRequired()
             .HasColumnType("decimal(18,2)");
+        builder.Property(s => s.SessionDate)
+            .IsRequired()
+            .HasColumnType("date");
+        builder.Property(s => s.Status)
+            .IsRequired()
+            .HasConversion<string>();
+
         builder.HasOne(s => s.ClassType)
             .WithMany()
             .HasForeignKey(s => s.ClassTypeId)

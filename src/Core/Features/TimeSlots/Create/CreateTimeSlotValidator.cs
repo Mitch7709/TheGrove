@@ -1,3 +1,4 @@
+using Core.Models;
 using FluentValidation;
 
 namespace Core.Features.TimeSlots.Create;
@@ -13,7 +14,8 @@ public class CreateTimeSlotValidator : AbstractValidator<CreateTimeSlotRequest>
             .WithMessage("DurationInMinutes must be less than or equal to 1440.");
 
         RuleFor(x => x.DayOfWeek)
-            .IsInEnum()
-            .WithMessage("DayOfWeek is invalid.");
+            .NotEmpty()
+            .Must(value => Enum.TryParse<DayOfWeek>(value, ignoreCase: true, out _))
+            .WithMessage("Provided DayOfWeek is invalid.");
     }
 }

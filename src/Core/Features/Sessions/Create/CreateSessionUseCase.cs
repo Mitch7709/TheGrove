@@ -48,7 +48,9 @@ public class CreateSessionUseCase(IDbContext dbContext)
             session.ClassTypeId,
             session.InstructorId,
             session.TimeSlotId,
-            session.Price
+            session.Price,
+            session.SessionDate,
+            session.Status
         );
     }
 }
