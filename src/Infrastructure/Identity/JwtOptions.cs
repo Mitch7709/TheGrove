@@ -14,5 +14,5 @@ public class JwtOptions
     [Required]
     public string Key { get; set; } = string.Empty;
     [Required]
-    public int ExpiryInDays { get; set; }
+    public int ExpirationInDays { get; set; }
 }
