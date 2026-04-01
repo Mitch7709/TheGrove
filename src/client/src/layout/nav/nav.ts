@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Routes } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'app-nav',  
-  imports: [],
+  selector: 'app-nav',
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './nav.html',
   styleUrl: './nav.css',
 })
 export class Nav implements OnInit {
-
   ngOnInit(): void {
     document.documentElement.setAttribute('data-theme', 'emerald');
   }

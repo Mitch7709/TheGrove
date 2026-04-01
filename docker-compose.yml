@@ -56,5 +56,16 @@ services:
     ports:
       - "4200:80"
 
+  client-dev:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm ci && npx ng serve --host 0.0.0.0 --poll 500"
+    volumes:
+      - ./src/client:/app
+    depends_on:
+      - api
+    ports:
+      - "4201:4200"
+
 volumes:
   sqlserver_data:
