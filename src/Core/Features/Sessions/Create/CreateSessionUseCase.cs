@@ -32,6 +32,14 @@ public class CreateSessionUseCase(IDbContext dbContext)
             return Result.Failure(ErrorType.ValidationError, $"TimeSlot with id {request.TimeSlotId} not found.");
         }
 
+        // Verify if provided SessionDate matches the given TimeSlot's DayOfWeek
+        var timeSlot = await dbContext.Set<TimeSlot>()
+            .FirstOrDefaultAsync(ts => ts.Id == request.TimeSlotId);
+        if (timeSlot.DayOfWeek != request.SessionDate.DayOfWeek)
+        {
+            return Result.Failure(ErrorType.ValidationError, $"SessionDate {request.SessionDate} does not match the DayOfWeek for the given TimeSlot");
+        }
+
         var session = new Session
         {
             ClassTypeId = request.ClassTypeId,
