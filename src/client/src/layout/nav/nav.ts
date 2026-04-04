@@ -9,7 +9,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class Nav implements OnInit {
   ngOnInit(): void {
-    document.documentElement.setAttribute('data-theme', 'emerald');
+    document.documentElement.setAttribute('data-theme', 'forest');
   }
 }
 
