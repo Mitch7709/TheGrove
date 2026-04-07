@@ -16,7 +16,9 @@ public class SessionReadService(IDbContext dbContext)
                 s.ClassTypeId,
                 s.InstructorId,
                 s.TimeSlotId,
-                s.Price
+                s.Price,
+                s.SessionDate,
+                s.Status
             ))
             .ToListAsync();
     }
@@ -31,7 +33,9 @@ public class SessionReadService(IDbContext dbContext)
                 s.ClassTypeId,
                 s.InstructorId,
                 s.TimeSlotId,
-                s.Price
+                s.Price,
+                s.SessionDate,
+                s.Status
             ))
             .FirstOrDefaultAsync();
 

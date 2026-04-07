@@ -40,10 +40,14 @@ public class UpdateSessionUseCase(IDbContext dbContext)
             return Result.Failure(ErrorType.ValidationError, $"TimeSlot with id {request.TimeSlotId} not found.");
         }
 
+        var sessionStatusParsed = Enum.Parse<SessionStatus>(request.Status, ignoreCase: true);
+
         session.ClassTypeId = request.ClassTypeId;
         session.InstructorId = request.InstructorId;
         session.TimeSlotId = request.TimeSlotId;
         session.Price = request.Price;
+        session.SessionDate = request.SessionDate;
+        session.Status = sessionStatusParsed;
 
         await dbContext.SaveChangesAsync();
 
@@ -52,7 +56,9 @@ public class UpdateSessionUseCase(IDbContext dbContext)
             session.ClassTypeId,
             session.InstructorId,
             session.TimeSlotId,
-            session.Price
+            session.Price,
+            session.SessionDate,
+            session.Status
         );
     }
 }

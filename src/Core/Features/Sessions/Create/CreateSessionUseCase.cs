@@ -24,20 +24,27 @@ public class CreateSessionUseCase(IDbContext dbContext)
             return Result.Failure(ErrorType.ValidationError, $"Instructor with id {request.InstructorId} not found.");
         }
 
-        var timeSlotExists = await dbContext.Set<TimeSlot>()
-            .AnyAsync(ts => ts.Id == request.TimeSlotId);
+        // Verify if provided TimeSlot exists and if provided SessionDate matches the given TimeSlot's DayOfWeek
+        var timeSlot = await dbContext.Set<TimeSlot>()
+            .FirstAsync(ts => ts.Id == request.TimeSlotId);
 
-        if (!timeSlotExists)
+        if (timeSlot == null)
         {
             return Result.Failure(ErrorType.ValidationError, $"TimeSlot with id {request.TimeSlotId} not found.");
         }
 
-        // Verify if provided SessionDate matches the given TimeSlot's DayOfWeek
-        var timeSlot = await dbContext.Set<TimeSlot>()
-            .FirstOrDefaultAsync(ts => ts.Id == request.TimeSlotId);
         if (timeSlot.DayOfWeek != request.SessionDate.DayOfWeek)
         {
             return Result.Failure(ErrorType.ValidationError, $"SessionDate {request.SessionDate} does not match the DayOfWeek for the given TimeSlot");
+        }
+
+        // Verify if the provided TimeSlot is not already occupied by a different session.
+        var isTimeSlotOccupied = await dbContext.Set<Session>()
+            .AnyAsync(s => s.TimeSlotId == request.TimeSlotId && s.SessionDate == request.SessionDate);
+
+        if (isTimeSlotOccupied)
+        {
+            return Result.Failure(ErrorType.ValidationError, $"A different session already occupies the provided TimeSlot.");
         }
 
         var session = new Session
@@ -45,7 +52,9 @@ public class CreateSessionUseCase(IDbContext dbContext)
             ClassTypeId = request.ClassTypeId,
             InstructorId = request.InstructorId,
             TimeSlotId = request.TimeSlotId,
-            Price = request.Price
+            Price = request.Price,
+            SessionDate = request.SessionDate,
+            Status = request.Status
         };
 
         dbContext.Set<Session>().Add(session);

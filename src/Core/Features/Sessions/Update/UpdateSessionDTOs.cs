@@ -1,10 +1,14 @@
+using Core.Models;
+
 namespace Core.Features.Sessions.Update;
 
 public record UpdateSessionRequest(
     int ClassTypeId,
     int InstructorId,
     int TimeSlotId,
-    decimal Price
+    decimal Price,
+    DateOnly SessionDate,
+    string Status
 );
 
 public record UpdateSessionResponse(
@@ -12,5 +16,7 @@ public record UpdateSessionResponse(
     int ClassTypeId,
     int InstructorId,
     int TimeSlotId,
-    decimal Price
+    decimal Price,
+    DateOnly SessionDate,
+    SessionStatus Status
 );

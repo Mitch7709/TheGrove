@@ -1,3 +1,5 @@
+using Core.Models;
+
 namespace Core.Features.Sessions.Read;
 
 public record SessionResponse(
@@ -5,5 +7,7 @@ public record SessionResponse(
     int ClassTypeId,
     int InstructorId,
     int TimeSlotId,
-    decimal Price
+    decimal Price,
+    DateOnly SessionDate,
+    SessionStatus Status
 );
