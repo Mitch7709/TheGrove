@@ -14,7 +14,7 @@ public class TimeSlotModule : IModule
     {
         var group = app.MapGroup("/time-slots")
             .WithTags("Time Slots")
-            .RequireAuthorization(Security.NonStudentPolicy);
+            .RequireAuthorization(Security.AdminPolicy);
 
         group.MapGet("", GetTimeSlots);
         group.MapGet("/{id}", GetTimeSlotById);

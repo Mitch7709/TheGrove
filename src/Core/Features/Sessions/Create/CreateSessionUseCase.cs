@@ -26,11 +26,11 @@ public class CreateSessionUseCase(IDbContext dbContext)
 
         // Verify if provided TimeSlot exists and if provided SessionDate matches the given TimeSlot's DayOfWeek
         var timeSlot = await dbContext.Set<TimeSlot>()
-            .FirstAsync(ts => ts.Id == request.TimeSlotId);
+            .FirstAsync(ts => ts.Id == request.TimeSlotId && ts.IsActive);
 
         if (timeSlot == null)
         {
-            return Result.Failure(ErrorType.ValidationError, $"TimeSlot with id {request.TimeSlotId} not found.");
+            return Result.Failure(ErrorType.ValidationError, $"TimeSlot with id {request.TimeSlotId} not found or inactive.");
         }
 
         if (timeSlot.DayOfWeek != request.SessionDate.DayOfWeek)

@@ -12,3 +12,9 @@ public record ClassTypeResponse(
     bool IsActive,
     IReadOnlyList<QualifiedInstructorSummary> QualifiedInstructors
 );
+
+public record QualifiedInstructorSummary(
+    int Id,
+    string FirstName,
+    string LastName
+);
