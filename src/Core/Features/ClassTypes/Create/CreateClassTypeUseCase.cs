@@ -45,12 +45,7 @@ public class CreateClassTypeUseCase(IDbContext dbContext)
             classType.Description,
             classType.Style,
             classType.Level,
-            classType.IsActive,
-            instructors.Select(i => new QualifiedInstructorSummary(
-                i.Id,
-                i.AppUser.FirstName,
-                i.AppUser.LastName
-            )).ToList()
+            classType.IsActive
         );
     }
 }
