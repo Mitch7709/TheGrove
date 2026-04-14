@@ -14,7 +14,7 @@ public class SessionReadService(IDbContext dbContext)
             .Select(s => new SessionResponse(
                 s.Id,
                 new ClassTypeSummary(s.ClassType.Id, s.ClassType.Name, s.ClassType.Style, s.ClassType.Level),
-                new InstructorSummary(s.Instructor.Id, s.Instructor.AppUser.UserName!),
+                new InstructorSummary(s.Instructor.Id, $"{s.Instructor.AppUser.FirstName} {s.Instructor.AppUser.LastName}"),
                 new TimeSlotSummary(s.TimeSlot.Id, s.TimeSlot.DayOfWeek, s.TimeSlot.StartTime, s.TimeSlot.DurationInMinutes),
                 s.Price,
                 s.SessionDate,
@@ -31,7 +31,7 @@ public class SessionReadService(IDbContext dbContext)
             .Select(s => new SessionResponse(
                 s.Id,
                 new ClassTypeSummary(s.ClassType.Id, s.ClassType.Name, s.ClassType.Style, s.ClassType.Level),
-                new InstructorSummary(s.Instructor.Id, s.Instructor.AppUser.UserName!),
+                new InstructorSummary(s.Instructor.Id, $"{s.Instructor.AppUser.FirstName} {s.Instructor.AppUser.LastName}"),
                 new TimeSlotSummary(s.TimeSlot.Id, s.TimeSlot.DayOfWeek, s.TimeSlot.StartTime, s.TimeSlot.DurationInMinutes),
                 s.Price,
                 s.SessionDate,

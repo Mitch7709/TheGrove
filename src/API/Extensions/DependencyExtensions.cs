@@ -7,6 +7,10 @@ using Core.Features.Instructors.Create;
 using Core.Features.Instructors.Delete;
 using Core.Features.Instructors.Read;
 using Core.Features.Instructors.Update;
+using Core.Features.Bookings.Create;
+using Core.Features.Bookings.Delete;
+using Core.Features.Bookings.Read;
+using Core.Features.Bookings.Update;
 using Core.Features.Sessions.Create;
 using Core.Features.Sessions.Delete;
 using Core.Features.Sessions.Read;
@@ -67,6 +71,13 @@ public static class DependencyExtensions
         services.AddTransient<DeleteSessionUseCase>();
         services.AddValidatorsFromAssemblyContaining<UpdateSessionValidator>();
         services.AddValidatorsFromAssemblyContaining<CreateSessionValidator>();
+
+        services.AddTransient<CreateBookingUseCase>();
+        services.AddTransient<UpdateBookingUseCase>();
+        services.AddTransient<BookingReadService>();
+        services.AddTransient<DeleteBookingUseCase>();
+        services.AddValidatorsFromAssemblyContaining<UpdateBookingValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateBookingValidator>();
 
 
         services.AddTransient<RegisterUseCase>();

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Features.ClassTypes.Read;
 using Core.Models;
 using Core.Shared;
 using Microsoft.EntityFrameworkCore;
