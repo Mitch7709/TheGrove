@@ -1,6 +1,7 @@
 ﻿using Core.Features.Users;
 using Core.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Infrastructure.Identity;
 

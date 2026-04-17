@@ -18,6 +18,7 @@ public class BookingModule : IModule
 
         group.MapGet("", GetBookings);
         group.MapGet("/{id}", GetBookingById);
+        group.MapGet("/student", GetStudentBookings);
 
         group.MapPost("", CreateBooking)
             .Validator<CreateBookingRequest>();
@@ -37,6 +38,14 @@ public class BookingModule : IModule
     private static async Task<Results<Ok<BookingResponse>, NotFound<string>>> GetBookingById(int id, BookingReadService service)
     {
         var result = await service.GetByIdAsync(id);
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Value)
+            : TypedResults.NotFound(result.ErrorMessage);
+    }
+
+    private static async Task<Results<Ok<IReadOnlyList<BookingResponse>>, NotFound<string>>> GetStudentBookings(BookingReadService service)
+    {
+        var result = await service.GetBookingsForStudent();
         return result.IsSuccess
             ? TypedResults.Ok(result.Value)
             : TypedResults.NotFound(result.ErrorMessage);
