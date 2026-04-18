@@ -86,4 +86,28 @@ public class BookingReadService(IDbContext dbContext, IUserContext userContext)
         }
         return bookings;
     }
+
+    public async Task<Result<IReadOnlyList<BookingResponse>>> GetBookingsForSession(int sessionId)
+    {
+        var bookings = await dbContext.Set<Booking>()
+            .AsNoTracking()
+            .Where(b => b.SessionId == sessionId)
+            .OrderBy(b => b.Id)
+            .Select(b => new BookingResponse(
+                b.Id,
+                new BookingSessionSummary(b.Session.Id, b.Session.SessionDate, b.Session.ClassType.Name),
+                new BookingStudentSummary(b.Student.Id, $"{b.Student.AppUser.FirstName} {b.Student.AppUser.LastName}"),
+                b.BookingDate,
+                b.PaymentStatus,
+                b.ConfirmationId,
+                b.PriceAtBooking,
+                b.BookingStatus
+            ))
+            .ToListAsync();
+        if (bookings.Count == 0)
+        {
+            return Result.Failure(ErrorType.NotFound, $"No bookings found for session with id {sessionId}.");
+        }
+        return bookings;
+    }
 }

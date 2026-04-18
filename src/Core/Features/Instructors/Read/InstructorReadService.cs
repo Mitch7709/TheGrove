@@ -10,7 +10,6 @@ public class InstructorReadService(IDbContext dbContext)
     public async Task<IReadOnlyList<InstructorResponse>> GetAllAsync()
     {
         return await dbContext.Set<Instructor>()
-            .Include(i => i.AppUser)
             .Select(i => new InstructorResponse
             (
                 i.Id,
@@ -27,7 +26,6 @@ public class InstructorReadService(IDbContext dbContext)
     public async Task<Result<InstructorResponse>> GetByIdAsync(int id)
     {
         var instructor = await dbContext.Set<Instructor>()
-            .Include(i => i.AppUser)
             .Where(i => i.Id == id)
             .Select(i => new InstructorResponse
             (

@@ -17,7 +17,6 @@ public class CreateClassTypeUseCase(IDbContext dbContext)
             return Result.Failure(ErrorType.Conflict, $"A class type with the name '{request.Name}' already exists.");
 
         var instructors = await dbContext.Set<Instructor>()
-            .Include(i => i.AppUser)
             .Where(i => request.QualifiedInstructorIds.Contains(i.Id))
             .ToListAsync();
 

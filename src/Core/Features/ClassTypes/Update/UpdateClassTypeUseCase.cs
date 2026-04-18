@@ -19,7 +19,6 @@ public class UpdateClassTypeUseCase(IDbContext dbContext)
             return Result.Failure(ErrorType.NotFound, $"ClassType with id {classTypeId} was not found");
 
         var instructors = await dbContext.Set<Instructor>()
-            .Include(i => i.AppUser)
             .Where(i => request.QualifiedInstructorIds.Contains(i.Id))
             .ToListAsync();
 

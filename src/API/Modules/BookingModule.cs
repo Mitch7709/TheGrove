@@ -16,8 +16,12 @@ public class BookingModule : IModule
             .WithTags("Bookings")
             .RequireAuthorization();
 
-        group.MapGet("", GetBookings);
-        group.MapGet("/{id}", GetBookingById);
+        group.MapGet("", GetBookings)
+            .RequireAuthorization(Security.NonStudentPolicy);
+        group.MapGet("/{id}", GetBookingById)
+            .RequireAuthorization(Security.NonStudentPolicy);
+        group.MapGet("/session/{sessionId}", GetBookingsForSession)
+            .RequireAuthorization(Security.NonStudentPolicy);
         group.MapGet("/student", GetStudentBookings);
 
         group.MapPost("", CreateBooking)
@@ -43,9 +47,18 @@ public class BookingModule : IModule
             : TypedResults.NotFound(result.ErrorMessage);
     }
 
-    private static async Task<Results<Ok<IReadOnlyList<BookingResponse>>, NotFound<string>>> GetStudentBookings(BookingReadService service)
+    private static async Task<Results<Ok<IReadOnlyList<BookingResponse>>, NotFound<string>>> 
+        GetStudentBookings(BookingReadService service)
     {
         var result = await service.GetBookingsForStudent();
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Value)
+            : TypedResults.NotFound(result.ErrorMessage);
+    }
+
+    private static async Task<Results<Ok<IReadOnlyList<BookingResponse>>, NotFound<string>>> GetBookingsForSession(int sessionId, BookingReadService service)
+    {
+        var result = await service.GetBookingsForSession(sessionId);
         return result.IsSuccess
             ? TypedResults.Ok(result.Value)
             : TypedResults.NotFound(result.ErrorMessage);

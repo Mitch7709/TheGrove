@@ -12,8 +12,6 @@ public class ClassTypeReadService(IDbContext dbContext)
     public async Task<IReadOnlyList<ClassTypeResponse>> GetAllAsync()
     {
         return await dbContext.Set<ClassType>()
-            .Include(ct => ct.QualifiedInstructors)
-                .ThenInclude(i => i.AppUser)
             .Select(c => new ClassTypeResponse
             (
                 c.Id,
@@ -35,8 +33,6 @@ public class ClassTypeReadService(IDbContext dbContext)
     public async Task<Result<ClassTypeResponse>> GetByIdAsync(int id)
     {
         var classType = await dbContext.Set<ClassType>()
-            .Include(ct => ct.QualifiedInstructors)
-                .ThenInclude(i => i.AppUser)
             .Where(c => c.Id == id)
             .Select(c => new ClassTypeResponse
             (
