@@ -1,4 +1,3 @@
-
 using API.Configuration;
 using API.Extensions;
 using Infrastructure.Database;
@@ -15,6 +14,10 @@ public class Program
         // Add services to the container.
         builder.Services.AddEndpointsApiExplorer()
                         .AddOpenApi()
+                        .ConfigureHttpJsonOptions(options =>
+                        {
+                            options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+                        })
                         .AddHttpContextAccessor()
                         .AddCustomConfiguration(builder.Configuration)
                         .AddDatabase()
