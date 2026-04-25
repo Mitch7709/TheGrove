@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { LoginCreds, RegisterInstructorCreds, RegisterResponse, RegisterStudentCreds } from '../../types/DTOs/UserDTOs';
-import { tap } from 'rxjs/internal/operators/tap';
+import { LoginCreds, LoginResponse, RegisterInstructorCreds, RegisterResponse, RegisterStudentCreds } from '../../types/DTOs/UserDTOs';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class UserService {
   private baseUrl = environment.apiUrl;
 
   login(creds: LoginCreds) {
-    return this.http.post<RegisterResponse>(`${this.baseUrl}/login`, creds)
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, creds)
     .pipe(
       tap(response => {
         localStorage.setItem('token', response.token);

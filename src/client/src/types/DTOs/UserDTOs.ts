@@ -25,3 +25,8 @@ export type RegisterResponse = {
     userId: string;
     token: string;
 };
+
+export type LoginResponse = {
+    userId: string;
+    token: string;
+};
