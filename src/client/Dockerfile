@@ -6,7 +6,7 @@ COPY src/client/package*.json ./
 RUN npm ci
 
 COPY src/client/ .
-RUN npm run build
+RUN npm run build -- --configuration development
 
 # ── Stage 2: Serve with Nginx ─────────────────────────────────────────────────
 FROM nginx:1.27-alpine AS runtime

@@ -21,12 +21,7 @@ export type RegisterInstructorCreds = {
     bio: string;
 };
 
-export type RegisterResponse = {
+export type AuthResponse = {
     userId: string;
     token: string;
-};
-
-export type LoginResponse = {
-    userId: string;
-    token: string;
-};
+}

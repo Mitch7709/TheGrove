@@ -1,25 +1,119 @@
-<div class="flex items-center justify-center h-screen">
-  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-md border p-4">
-    <legend class="fieldset-legend">Register</legend>
+<section class="bg-gray-50 dark:bg-base-200">
+  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-black">
+      <img
+        class="w-8 h-8 mr-2"
+        src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+        alt="logo"
+      />
+      The Grove
+    </a>
+    <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-orange-300">
+      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <h1
+          class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-gray-900"
+        >
+          Create an account
+        </h1>
+        <form [formGroup]="credentialsForm" class="space-y-4 md:space-y-6" action="#">
+          <div>
+            <app-text-input
+              [label]="'First Name'"
+              [placeholder]="'First Name'"
+              [required]="true"
+              formControlName="firstName"
+            />
+          </div>
+          <div>
+            <app-text-input
+              [label]="'Last Name'"
+              [placeholder]="'Last Name'"
+              [required]="true"
+              formControlName="lastName"
+            />
+          </div>
+          <div>
+            <app-text-input
+              [label]="'Email'"
+              [placeholder]="'Email'"
+              [required]="true"
+              formControlName="email"
+            />
+          </div>
+          <div>
+            <app-text-input
+              [label]="'Phone Number'"
+              [placeholder]="'Phone Number'"
+              [required]="true"
+              formControlName="phone"
+            />
+          </div>
+          <div class="flex flex-row gap-4">
+            <div>
+              <input
+                type="radio"
+                name="role"
+                value="Student"
+                class="radio"
+                checked="checked"
+                (change)="onRoleChange($event)"
+              />
+              <label for="student" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-900"
+                >Student</label
+              >
+            </div>
+            <div>
+              <input
+                type="radio"
+                name="role"
+                value="Instructor"
+                class="radio"
+                (change)="onRoleChange($event)"
+              />
+              <label
+                for="instructor"
+                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-900"
+                >Instructor</label
+              >
+            </div>
+          </div>
+          @if (role === 'Student') {
+            <div>
+              <app-text-input
+                [label]="'Date of Birth'"
+                [type]="'date'"
+                [placeholder]="'Date of Birth'"
+                [required]="true"
+                formControlName="dob"
+              />
+            </div>
+          } @else if (role === 'Instructor') {
+            <div>
+              <app-text-input
+                [label]="'Bio'"
+                [type]="'textarea'"
+                [placeholder]="'Bio'"
+                [required]="true"
+                formControlName="bio"
+              />
+            </div>
+          }
 
-    <label class="label">First Name</label>
-    <input type="text" class="input" placeholder="First Name" />
+          <div>
+            <app-text-input
+              [label]="'Password'"
+              [type]="'password'"
+              [placeholder]="'Password'"
+              [required]="true"
+              formControlName="password"
+            />
+          </div>
 
-    <label class="label">Last Name</label>
-    <input type="text" class="input" placeholder="Last Name" />
-
-    <label class="label">Email</label>
-    <input type="email" class="input" placeholder="Email" />
-
-    <label class="label">Phone Number</label>
-    <input type="tel" class="input" placeholder="Phone Number" />
-
-    <label class="label">Date of Birth</label>
-    <input type="date" class="input" placeholder="Date of Birth" />
-
-    <label class="label">Password</label>
-    <input type="password" class="input" placeholder="Password" />
-
-    <button class="btn btn-neutral mt-4">Register</button>
-  </fieldset>
-</div>
+          <div class="flex items-center">
+            <button type="submit" (click)="register()" class="btn btn-primary justify-center">Create an account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

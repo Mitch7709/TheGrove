@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { LoginCreds, LoginResponse, RegisterInstructorCreds, RegisterResponse, RegisterStudentCreds } from '../../types/DTOs/UserDTOs';
+import {
+  AuthResponse,
+  LoginCreds,
+  RegisterInstructorCreds,
+  RegisterStudentCreds,
+} from '../../types/DTOs/UserDTOs';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -13,29 +18,27 @@ export class UserService {
   private baseUrl = environment.apiUrl;
 
   login(creds: LoginCreds) {
-    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, creds)
-    .pipe(
-      tap(response => {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, creds).pipe(
+      tap((response) => {
         localStorage.setItem('token', response.token);
-      })
+      }),
     );
   }
-  
+
   registerStudent(creds: RegisterStudentCreds) {
-    return this.http.post<RegisterResponse>(`${this.baseUrl}/register/student`, creds)
-    .pipe(
-      tap(response => {
+
+    return this.http.post<AuthResponse>(`${this.baseUrl}/register/student`, creds).pipe(
+      tap((response) => {
         localStorage.setItem('token', response.token);
-      })
+      }),
     );
   }
 
   registerInstructor(creds: RegisterInstructorCreds) {
-    return this.http.post<RegisterResponse>(`${this.baseUrl}/register/instructor`, creds)
-    .pipe(
-      tap(response => {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/register/instructor`, creds).pipe(
+      tap((response) => {
         localStorage.setItem('token', response.token);
-      })
+      }),
     );
   }
 }
