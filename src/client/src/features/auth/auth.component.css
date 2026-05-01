@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.tabs {
+  width: 100%;
+}
+
+.tab-content {
+  width: 100%;
+}
+
+.tab-content > * {
+  display: block;
+  width: 100%;
+}

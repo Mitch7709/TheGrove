@@ -13,8 +13,9 @@ import { tap } from 'rxjs';
   providedIn: 'root',
 })
 export class UserService {
-  private http = inject(HttpClient);
+  private readonly ROLE_CLAIM = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
 
+  private http = inject(HttpClient);
   private baseUrl = environment.apiUrl;
 
   login(creds: LoginCreds) {
@@ -40,5 +41,16 @@ export class UserService {
         localStorage.setItem('token', response.token);
       }),
     );
+  }
+
+  getRole(): 'Student' | 'Instructor' | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload[this.ROLE_CLAIM] as 'Student' | 'Instructor';
+    } catch {
+        return null;
+    }
   }
 }
