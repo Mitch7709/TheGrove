@@ -42,12 +42,15 @@ namespace API.Modules
                 : TypedResults.NotFound(result.ErrorMessage);
         }
 
-        private static async Task<Results<Ok<CreateSessionResponse>, BadRequest<string>>>
+        private static async Task<Results<Ok<CreateSessionResponse>, NotFound<string>, BadRequest<string>>>
             CreateSession(CreateSessionRequest request, CreateSessionUseCase useCase)
         {
             var result = await useCase.ExecuteAsync(request);
-            return result.IsSuccess
-                ? TypedResults.Ok(result.Value)
+            if (result.IsSuccess)
+                return TypedResults.Ok(result.Value);
+
+            return result.ErrorType == ErrorType.NotFound
+                ? TypedResults.NotFound(result.ErrorMessage)
                 : TypedResults.BadRequest(result.ErrorMessage);
         }
 

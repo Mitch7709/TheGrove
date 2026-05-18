@@ -13,7 +13,7 @@ public class CreateSessionUseCase(IDbContext dbContext)
 
         if (!classTypeExists)
         {
-            return Result.Failure(ErrorType.ValidationError, $"ClassType with id {request.ClassTypeId} not found.");
+            return Result.Failure(ErrorType.NotFound, $"ClassType with id {request.ClassTypeId} not found.");
         }
 
         var instructorExists = await dbContext.Set<Instructor>()
@@ -21,7 +21,7 @@ public class CreateSessionUseCase(IDbContext dbContext)
 
         if (!instructorExists)
         {
-            return Result.Failure(ErrorType.ValidationError, $"Instructor with id {request.InstructorId} not found.");
+            return Result.Failure(ErrorType.NotFound, $"Instructor with id {request.InstructorId} not found.");
         }
 
         // Verify if provided TimeSlot exists and if provided SessionDate matches the given TimeSlot's DayOfWeek
@@ -30,7 +30,7 @@ public class CreateSessionUseCase(IDbContext dbContext)
 
         if (timeSlot == null)
         {
-            return Result.Failure(ErrorType.ValidationError, $"TimeSlot with id {request.TimeSlotId} not found or inactive.");
+            return Result.Failure(ErrorType.NotFound, $"TimeSlot with id {request.TimeSlotId} not found or inactive.");
         }
 
         if (timeSlot.DayOfWeek != request.SessionDate.DayOfWeek)

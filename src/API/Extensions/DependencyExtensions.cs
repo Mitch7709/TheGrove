@@ -80,8 +80,10 @@ public static class DependencyExtensions
         services.AddValidatorsFromAssemblyContaining<CreateBookingValidator>();
 
 
-        services.AddTransient<RegisterUseCase>();
-        services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
+        services.AddTransient<RegisterStudentUseCase>();
+        services.AddTransient<RegisterInstructorUseCase>();
+        services.AddValidatorsFromAssemblyContaining<RegisterStudentValidator>();
+        services.AddValidatorsFromAssemblyContaining<RegisterInstructorValidator>();
         services.AddTransient<LoginUseCase>();
         services.AddValidatorsFromAssemblyContaining<LoginValidator>();
         services.AddTransient<ITokenService, TokenService>();

@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Core.Features.Users.Register;
 
-public class RegisterValidator : AbstractValidator<RegisterRequest>
+public class RegisterStudentValidator : AbstractValidator<RegisterStudentRequest>
 {
-    public RegisterValidator()
+    public RegisterStudentValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty()
@@ -25,5 +25,8 @@ public class RegisterValidator : AbstractValidator<RegisterRequest>
 
         RuleFor(x => x.PhoneNumber)
             .Matches(@"^\d{3}-?\d{3}-?\d{4}$");
+
+        RuleFor(x => x.DateOfBirth)
+            .NotEmpty();
     }
 }

@@ -27,7 +27,6 @@ export class UserService {
   }
 
   registerStudent(creds: RegisterStudentCreds) {
-
     return this.http.post<AuthResponse>(`${this.baseUrl}/register/student`, creds).pipe(
       tap((response) => {
         localStorage.setItem('token', response.token);

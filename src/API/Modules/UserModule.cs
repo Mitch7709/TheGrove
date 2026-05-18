@@ -12,10 +12,10 @@ public class UserModule : IModule
     {
         app.MapPost("/register/student", RegisterStudent)
             .WithTags("Users")
-            .Validator<RegisterRequest>();
+            .Validator<RegisterStudentRequest>();
         app.MapPost("/register/instructor", RegisterInstructor)
             .WithTags("Users")
-            .Validator<RegisterRequest>();
+            .Validator<RegisterInstructorRequest>();
 
         app.MapPost("/login", Login)
             .WithTags("Users")
@@ -32,9 +32,9 @@ public class UserModule : IModule
     }
 
     private static async Task<Results<Ok<RegisterResponse>, BadRequest<string>, UnprocessableEntity<string>>> 
-        RegisterStudent(RegisterRequest request, RegisterUseCase useCase)
+        RegisterStudent(RegisterStudentRequest request, RegisterStudentUseCase useCase)
     {
-        var result = await useCase.Execute(request, UserRole.Student);
+        var result = await useCase.Execute(request);
 
         return result switch
         {
@@ -46,9 +46,9 @@ public class UserModule : IModule
     }
 
     private static async Task<Results<Ok<RegisterResponse>, BadRequest<string>, UnprocessableEntity<string>>> 
-        RegisterInstructor(RegisterRequest request, RegisterUseCase useCase)
+        RegisterInstructor(RegisterInstructorRequest request, RegisterInstructorUseCase useCase)
     {
-        var result = await useCase.Execute(request, UserRole.Instructor);
+        var result = await useCase.Execute(request);
 
         return result switch
         {

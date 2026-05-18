@@ -46,7 +46,6 @@ public class AppUser : IdentityUser, IEntity
     }
 }
 
-[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum UserRole
 {
     Admin,
